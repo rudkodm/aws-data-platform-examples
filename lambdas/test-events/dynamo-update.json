@@ -1,0 +1,37 @@
+{
+  "Records": [
+    {
+      "eventID": "ab2ce7ab01f6a4f958cd639851a6c027",
+      "eventName": "MODIFY",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-east-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1554928431,
+        "Keys": {
+          "id": {
+            "N": "1"
+          }
+        },
+        "NewImage": {
+          "visits": {
+            "N": "5"
+          },
+          "last_name": {
+            "S": "L_Name_1"
+          },
+          "id": {
+            "N": "1"
+          },
+          "first_name": {
+            "S": "F_Name_1"
+          }
+        },
+        "SequenceNumber": "813900000000039046723874",
+        "SizeBytes": 51,
+        "StreamViewType": "NEW_IMAGE"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:124977917297:table/Customers/stream/2019-04-10T16:25:45.696"
+    }
+  ]
+}
