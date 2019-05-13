@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+    DataPlatformID:
+        Description: 'Base identifier for an instance of Data Platform'
+        Type: String
+Resources:
+    IAMGlueJobRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            RoleName: !Sub 'AWSGlueServiceRole-${DataPlatformID}'
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                -   Effect: 'Allow'
+                    Principal:
+                        Service:
+                        - 'glue.amazonaws.com'
+                    Action:
+                    - 'sts:AssumeRole'
+            Path: '/'
+            Policies: # TODO: Restrict Glue Job Access
+            -   PolicyName: !Sub 'AWSGlueServiceRole-${DataPlatformID}'
+                PolicyDocument:
+                  Version: "2012-10-17"
+                  Statement:
+                  - Effect: "Allow"
+                    Action: "*"
+                    Resource: "*"
+
+    S3GlueFiles:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: !Sub '${DataPlatformID}-glue-files-${AWS::AccountId}-${AWS::Region}'
+    S3RawArea:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: !Sub '${DataPlatformID}-raw-${AWS::AccountId}-${AWS::Region}'
+    S3PreparedArea:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: !Sub '${DataPlatformID}-prepared-${AWS::AccountId}-${AWS::Region}'
+    S3PublishingArea:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: !Sub '${DataPlatformID}-publishing-${AWS::AccountId}-${AWS::Region}'

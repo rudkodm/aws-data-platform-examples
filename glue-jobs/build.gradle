@@ -1,0 +1,32 @@
+plugins {
+    id 'scala'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    repositories {
+        ivy {
+            name = 'aws-assembly'
+            url "s3://aws-glue-jes-prod-us-east-1-assets/etl/jars"
+            authentication {
+                awsIm(AwsImAuthentication)
+            }
+            layout("pattern") {
+                artifact "[module].[ext]"
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.scala-lang:scala-library:2.11.12'
+    compileOnly ':glue-assembly:@jar'
+    testCompile 'junit:junit:4.12'
+}
+
+wrapper {
+    gradleVersion = '5.4.1'
+}

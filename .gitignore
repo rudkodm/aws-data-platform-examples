@@ -1,0 +1,12 @@
+# Log file
+*.log
+
+# InteliJ IDEA
+**/*.idea/
+**/*.iml
+
+# Mac
+**/.DS_Store
+
+# Gradle
+**/.gradle
