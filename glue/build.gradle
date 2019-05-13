@@ -1,0 +1,21 @@
+allprojects {
+    repositories {
+        mavenCentral()
+        repositories {
+            ivy {
+                name = 'aws-assembly'
+                url "s3://aws-glue-jes-prod-us-east-1-assets/etl/jars"
+                authentication {
+                    awsIm(AwsImAuthentication)
+                }
+                layout("pattern") {
+                    artifact "[module].[ext]"
+                }
+            }
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = '5.4.1'
+}

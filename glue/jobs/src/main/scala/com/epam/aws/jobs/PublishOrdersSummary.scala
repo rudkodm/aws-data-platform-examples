@@ -1,14 +1,10 @@
-import com.amazonaws.services.glue.ChoiceOption
-import com.amazonaws.services.glue.GlueContext
-import com.amazonaws.services.glue.MappingSpec
-import com.amazonaws.services.glue.ResolveSpec
-import com.amazonaws.services.glue.errors.CallSite
-import com.amazonaws.services.glue.util.GlueArgParser
-import com.amazonaws.services.glue.util.Job
-import com.amazonaws.services.glue.util.JsonOptions
-import com.amazonaws.services.glue.DynamicFrame
+package com.epam.aws.jobs
+
+import com.amazonaws.services.glue.util.{GlueArgParser, Job, JsonOptions}
+import com.amazonaws.services.glue.{DynamicFrame, GlueContext}
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.SparkSession
+
 import scala.collection.JavaConverters._
 
 object PublishOrdersSummary {
