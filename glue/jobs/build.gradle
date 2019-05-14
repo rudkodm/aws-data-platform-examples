@@ -1,5 +1,8 @@
+import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
+
 plugins {
     id 'scala'
+    id 'jp.classmethod.aws.cloudformation' version "0.39"
 }
 
 sourceCompatibility = 1.8
@@ -20,4 +23,16 @@ jar {
             it.isDirectory() ? it : zipTree(it)
         }
     }
+}
+
+aws {
+    profileName = 'default'
+    region = 'us-east-1'
+}
+
+task deployToAws(type: AmazonS3FileUploadTask, dependsOn: jar) {
+    File jarFile  = jar.archivePath
+    file jarFile
+    bucketName 'aws-glue-scripts-us-east-1'
+    key "deployment/${jarFile.getName()}"
 }
