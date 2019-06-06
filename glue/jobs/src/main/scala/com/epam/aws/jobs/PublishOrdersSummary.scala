@@ -1,18 +1,24 @@
 package com.epam.aws.jobs
 
+import com.amazon.glue.metrics.GlueMetricsHelper
 import com.amazonaws.services.glue.util.{GlueArgParser, Job, JsonOptions}
 import com.amazonaws.services.glue.{DynamicFrame, GlueContext}
+import org.apache.log4j.LogManager
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.SparkSession
 
 import scala.collection.JavaConverters._
 
 object PublishOrdersSummary {
+  @transient val logger = LogManager.getLogger(PublishOrdersSummary.getClass)
+
   def main(sysArgs: Array[String]) {
     implicit lazy val spark: SparkSession = SparkSession.builder.getOrCreate()
     implicit lazy val sc: SparkContext = spark.sparkContext
     val glueContext: GlueContext = new GlueContext(sc)
     val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
+
+
 
     Job.init(
       args("JOB_NAME"),
@@ -46,6 +52,10 @@ object PublishOrdersSummary {
       transformationContext = "sink",
       format = "parquet"
     ).writeDynamicFrame(res)
+
+    new GlueMetricsHelper()
+    logger.info("""{"type":"CustomMetric,"value":100}""")
+
 
     Job.commit()
   }

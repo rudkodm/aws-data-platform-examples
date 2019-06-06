@@ -1,5 +1,9 @@
 package com.epam.aws.jobs
 
+import com.amazon.coral.metrics.helper.MetricsHelper
+import com.amazon.glue.metrics.{GlueMetricsHelper, Metric}
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsyncClient
+import com.amazonaws.services.cloudwatch.model.{Dimension, StandardUnit}
 import com.amazonaws.services.glue.util.{GlueArgParser, Job, JsonOptions}
 import com.amazonaws.services.glue.{ChoiceOption, GlueContext}
 import org.apache.spark.SparkContext
@@ -8,6 +12,13 @@ import org.apache.spark.sql.SparkSession
 import scala.collection.JavaConverters._
 
 object PrepareOrders {
+  @transient val metrics = new GlueMetricsHelper(
+    "SomeNamespace",
+    new MetricsHelper(),
+    AmazonCloudWatchAsyncClient.asyncBuilder.build(),
+    true
+  )
+
   def main(sysArgs: Array[String]) {
     implicit lazy val spark: SparkSession = SparkSession.builder.getOrCreate()
     implicit lazy val sc: SparkContext = spark.sparkContext
@@ -61,6 +72,28 @@ object PrepareOrders {
       format = "parquet"
     ).writeDynamicFrame(dropnullfields3)
 
+
+
+
+    metrics.putMetrics(
+      dim(("SomeDim", "d1")),
+      met(("SomeMet", 10, StandardUnit.None))
+    )
+
     Job.commit()
   }
+
+  def dim(dimList: (String, String)*): java.util.List[Dimension] = {
+    dimList.map( p =>
+      new Dimension()
+      .withName(p._1)
+      .withValue(p._2)
+    ).toList.asJava
+  }
+
+  def met(mList: (String, Double, StandardUnit)*): java.util.List[Metric] = {
+    mList.map(p => new Metric(p._1, p._2, p._3))
+      .toList.asJava
+  }
+
 }

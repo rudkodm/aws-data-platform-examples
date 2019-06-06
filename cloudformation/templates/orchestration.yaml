@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+    DataPlatformID:
+        Description: 'Base identifier for an instance of Data Platform'
+        Type: String
+Resources:
+    SomeGlueJob:
+        Type: "AWS::Glue::Job"
+        Properties:
+          AllocatedCapacity: 2
+          Command:
+            Name: "glueetl"
+            ScriptLocation: "s3://some_path_to_a_script_here"
+          ExecutionProperty:
+            MaxConcurrentRuns: 1
+          MaxRetries: 2
+          Name: "Job Name Here"
+          Role: "Some Role Here"

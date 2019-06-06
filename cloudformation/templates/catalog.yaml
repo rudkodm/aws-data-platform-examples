@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+    DataPlatformID:
+        Description: 'Base identifier for an instance of Data Platform'
+        Type: String
+Resources:
+    # TODO: Here will be Crawlers definition
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-glue-crawler.html
+    SomeCrawlerResource:
+        Type: 'AWS::Glue::Crawler'
+        Properties:
+          Name: "SomeCrawlerResource"
+          DatabaseName: "Some Database name"
+          Role: "SomeRoleHere"
+          Schedule:
+             ScheduleExpression: "0 * * * * *"
+          TablePrefix: "Some Table Prefix here"
+          Targets:
+            S3Targets:
+                Path: "Some Path on S3 Here"
